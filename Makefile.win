@@ -1,0 +1,37 @@
+# Makefile for wmatrix on Windows (MinGW/MSYS2)
+# Usage: mingw32-make -f Makefile.win
+# Requires: gcc (MinGW/MSYS2 ucrt64), ncursesw
+
+CC        = gcc
+VERSION   = 2.0
+
+# Auto-detect MSYS2 ucrt64 root from gcc location
+MSYS2_BIN  := $(dir $(shell where gcc 2>NUL))
+MSYS2_ROOT := $(MSYS2_BIN)..
+CURSES_INC  = $(MSYS2_ROOT)/include/ncursesw
+CURSES_LIB  = $(MSYS2_ROOT)/lib
+CURSES_BIN  = $(MSYS2_BIN)
+
+CFLAGS  = -DEXCLUDE_CONFIG_H -DVERSION=\"$(VERSION)\" -D_WIN32 \
+          -I"$(CURSES_INC)" -Wall -O2
+LDFLAGS = -L"$(CURSES_LIB)" -lncursesw
+
+SRCS    = wmatrix.c getopt.c
+TARGET  = wmatrix.exe
+DLL     = libncursesw6.dll
+
+.PHONY: all clean install bundle
+
+all: $(TARGET)
+
+$(TARGET): $(SRCS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+bundle: $(TARGET)
+	copy "$(CURSES_BIN)$(DLL)" "$(DLL)"
+
+clean:
+	-del /Q $(TARGET) $(DLL) 2>NUL
+
+install: $(TARGET) bundle
+	powershell -ExecutionPolicy Bypass -File install.ps1

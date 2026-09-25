@@ -1,0 +1,49 @@
+# Build output
+/build
+wmatrix
+wmatrix.exe
+*.dll
+*.o
+*.obj
+*.core
+
+# Autotools
+config.h
+config.h.in
+config.h.in~
+config.log
+config.status
+config.cache
+config.guess
+config.sub
+Makefile
+Makefile.in
+stamp-h*
+compile
+configure
+configure~
+configure.lineno
+depcomp
+install-sh
+missing
+aclocal.m4
+autom4te.cache/
+.deps/
+wmatrix.spec
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# Editors / tags
+TAGS
+ID
+GTAGS
+GRTAGS
+GSYMS
+GPATH
+tags
+cscope.*
+.vscode/
+.idea/
